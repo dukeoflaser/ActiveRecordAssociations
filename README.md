@@ -60,7 +60,7 @@ nameless_world_methods = nameless_world.methods.map {|method| method.to_s}.sort!
 nameless_world_methods.each {|m| puts m}
 ```
 ###Instance Methods for World
-
+```ruby
 !
 !=
 !~
@@ -420,12 +420,11 @@ with_lock
 with_transaction_returning_status
 with_warnings
 write_store_attribute
-
+```
 ###Class Methods for World
 ```ruby
 >> world_methods = World.methods.map {|method| method.to_s}.sort!
 >> world_methods.each {|m| puts m}
-```
 !
 !=
 !~
@@ -1034,7 +1033,7 @@ where
 with_warnings
 yaml_as
 yaml_tag
-
+```
 
 
 
