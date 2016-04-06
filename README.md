@@ -260,7 +260,73 @@ restore_world_id!
 
 
 ###A _Character_ `has_many` _power_ups_ `through:` _world_ 
-At this point, we've looked at the generated methods we end up with when our class has both a `belongs_to` relationship and a `has_many` relationship. A PowerUp model with both of those relationships would have both sets of methods, along with the database-column generated methods. But what about this _many to many_ relationship, AKA a `has_many through:` association, that we've got going on between our Characters and their many powerups? A Character can have many powerups, like this: `nameless_character.powerups => [...]` but we also want a list of every character that has each powerup, like this: `nameless_powerup.characters => [...]`.
+At this point, we've looked at the generated methods we end up with when our class has both a `belongs_to` relationship and a `has_many` relationship. A Character model with both of those relationships would have both sets of methods, along with the database-column generated methods. But what about this `has_many through:` association, that we've got going on between our Characters and their many powerups? Do we get any additional methods showing up?
+Generated from the `belongs_to (world)`method/arg:
+```ruby
+world
+world=
+autosave_associated_records_for_world
+belongs_to_counter_cache_after_update
+build_world
+create_world
+create_world!
+```
+
+Generated from the `has_many` method:
+```ruby
+after_add_for_power_ups
+after_add_for_power_ups=
+after_add_for_power_ups?
+after_remove_for_power_ups
+after_remove_for_power_ups=
+after_remove_for_power_ups?
+
+before_add_for_power_ups
+before_add_for_power_ups=
+before_add_for_power_ups?
+before_remove_for_power_ups
+before_remove_for_power_ups=
+before_remove_for_power_ups?
+
+power_up_ids
+power_up_ids=
+power_ups
+power_ups=
+
+autosave_associated_records_for_power_ups
+validate_associated_records_for_power_ups
+```
+
+Generated from the database columns:
+```ruby
+name
+name=
+name?
+name_before_type_cast
+name_came_from_user?
+name_change
+name_changed?
+name_was
+name_will_change!
+reset_name!
+restore_name!
+
+world_id
+world_id=
+world_id?
+world_id_before_type_cast
+world_id_came_from_user?
+world_id_change
+world_id_changed?
+world_id_was
+world_id_will_change!
+reset_world_id!
+restore_world_id!
+```
+
+If we compare this list of methods to the previous list of `belongs_to` and `has_many` methods, we can see that adding the `through:` argument to the macro does not create any additional methods.
+
+A Character can have many powerups, like this: `nameless_character.powerups => [...]` but we also want a list of every character that has each powerup, like this: `nameless_powerup.characters => [...]`.
 
 Here are updated versions of each of our three classes.
 ```ruby
