@@ -118,6 +118,7 @@ end
 ```
 
 #####Instance Methods
+Generated from the `has_many` method
 ```ruby
 after_add_for_characters
 after_add_for_characters=
@@ -140,7 +141,10 @@ characters=
 
 autosave_associated_records_for_characters
 validate_associated_records_for_characters
+```
 
+Generated from the database columns:
+```ruby
 name
 name=
 name?
@@ -249,7 +253,7 @@ restore_world_id!
 
 
 ###A _World_ `has_many` _powerups_ `through:` _characters_ 
-At this point, we've looked at the methods we end up when our class has both a `belongs_to` relationship and a `has_many` relationship. What about a _many to many_ relationship, AKA a `has_many through:` association?
+At this point, we've looked at the generated methods we end up with when our class has both a `belongs_to` relationship and a `has_many` relationship. A PowerUp model What about a _many to many_ relationship, AKA a `has_many through:` association?
 
 Here are updated versions of each of our three classes.
 ```ruby
