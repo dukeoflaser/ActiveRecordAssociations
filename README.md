@@ -253,20 +253,20 @@ restore_world_id!
 ```
 
 
-###A _Character_ `has_many` _powerups_ `through:` _world_ 
+###A _Character_ `has_many` _power_ups_ `through:` _world_ 
 At this point, we've looked at the generated methods we end up with when our class has both a `belongs_to` relationship and a `has_many` relationship. A PowerUp model with both of those relationships would have both sets of methods, along with the database-column generated methods. But what about this _many to many_ relationship, AKA a `has_many through:` association, that we've got going on between our Characters and their many powerups? A Character can have many powerups, like this: `nameless_character.powerups => [...]` but we also want a list of every character that has each powerup, like this: `nameless_powerup.characters => [...]`.
 
 Here are updated versions of each of our three classes.
 ```ruby
 class World < ActiveRecord::Base
   has_many :characters
-  has_many :powerups, through: characters
+  has_many :power_ups, through: characters
 end
 ```
 ```ruby
 class Character < ActiveRecord::Base
   belongs_to :world
-  has_many :powerups, through: :world
+  has_many :power_ups, through: :world
 end
 ```
 ```ruby
@@ -276,7 +276,7 @@ class PowerUp < ActiveRecord::Base
 end
 ```
 And here is our current database schema.
-Note: The name of the table has an underscore where the class name had an uppercase letter.
+Note: The name of the `power-ups` table has an underscore where the class name had an uppercase letter.
 ```ruby
 ActiveRecord::Schema.define(version: 20160406024221) do
 
@@ -298,9 +298,11 @@ end
 ```
 If we look back to our generated methods, we see that it is the `has_many` macro that gives our ____s method. Our PowerUp has many characters and our characters will have many powerups through their world.
 
+###It'sa Me....
 I've gone ahead and created the world `mushroom_kingdom` with a name of "Mushroom Kingdom". I've also created two characters named Mario and Luigi along with two Powerups `mushroom`, and `fire_flower`.
 
-Before anything else, lets test some of our relationships. If we set give Mario a world to live in, like this:
+Before anything else, lets test some of our relationships. 
+If we give Mario a world to live in, like this:
 ```ruby
 mario.world = mushroom_kingdom
 ```
@@ -310,14 +312,22 @@ Instead, however, we get this:
 >> mushroom_kingdom.characters.first
 => nil
 ```
-The problem is this. **Children are not responsible**.
-Rather than telling the child object that `belongs_to` the parent about anything, Always tell the parent. The parent is responsible and will let the child object know anything it needs to know.
+Hmmm. The problem is this: 
+**Children are not responsible**.
+Rather than telling a child object (`mario`)something the parent needs to know, always tell the parent (`mushroom_kingdom`). The parent is the responsible one in the relationship and will let the child object know what it needs to know.
 ```ruby
 >> goomba = Character.create(name: "Goomba")
 => #<Character id: 3, name: "Goomba", world_id: nil>
 
 >> mushroom_kingdom.characters << goomba
 >> goomba.world
-=> #<World id: 2, name: "Mushroom Kingdom">
+=> #<World id: 1, name: "Mushroom Kingdom">
+
+>> mushroom_kingdom.power_ups << mushroom
+>> mushroom_kingdom.power_ups << fire_flower
+
+>> fire_flower.world
+=> #<World id: 1, name: "Mushroom Kingdom">
 ```
+
 
