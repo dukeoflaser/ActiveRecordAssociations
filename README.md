@@ -322,6 +322,8 @@ Rather than telling a child object (`mario`)something the parent needs to know, 
 >> mushroom_kingdom.characters << goomba
 >> goomba.world
 => #<World id: 1, name: "Mushroom Kingdom">
+>> goomba
+=> #<Character id: 3, name: "Goomba", world_id: 1>
 
 >> mushroom_kingdom.power_ups << mushroom
 >> mushroom_kingdom.power_ups << fire_flower
