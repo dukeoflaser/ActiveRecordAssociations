@@ -74,7 +74,7 @@ ActiveRecord::Schema.define(version: 20160405222201) do
 end
 ```
 
-Now, let's create a world that has no name. It will be a simple instance, with no attributes.
+Let's now create a world that has no name. It will be a simple instance, with no attributes.
 ```ruby
 >> nameless_world = World.create
 D, [2016-04-05T22:33:05.639088 #3388] DEBUG -- :    (0.2ms)  begin transaction
@@ -89,7 +89,9 @@ nameless_world_methods.each {|m| puts m}
 
 We are now ready to make our comparisons.
 
-###A _World_ that has many _characters_
+
+
+###A _World_ that `has_many` _characters_
 Note: The list of methods was created like this:
 ```ruby
 >> nameless_world_methods = nameless_world.methods.map {|m| m.to_s}.sort!
@@ -174,16 +176,18 @@ As you can see, ActiveRecord generates instance methods based on the names of th
 There are also some common class methods based on the associated model.
 
 
-### Character belongs to World
-If a model is the child of something it gets a `belongs_to` association. If a model has two or parents it can belong to both through mutltiple `belongs_to` method calls. Another way of looking at the belongs to association is to ask youself if you want this kind of method: `child.dad => <#Dad Object>` or `child.mom => <#Mom Object`
+
+###A _Character_ `belongs_to` a _world_
+If a model is a child of something it gets a `belongs_to` association. If a model has two or parents it can belong to both through mutltiple `belongs_to` method calls. Another way of looking at the belongs to association is to ask youself if you want this kind of method: `child.dad => <#Dad Object>` or `child.mom => <#Mom Object`
 
 If a model is a child of anything, it requires a parent_id column to be added to it's corresponding table. Any column with a `_id` suffix becomes a foreign key that points to the corresponding table's id column. So, if a character is a child of world, it will need a world_id column to point to the worlds table's id column.
+
+Here is our Character model.
 ```ruby
 class Character < ActiveRecord::Base
   belongs_to :world
 end
 ```
-`rake db:create_migration NAME=create_characters_table`
 ```ruby
 class CreateCharactersTable < ActiveRecord::Migration
   def change
@@ -194,41 +198,34 @@ class CreateCharactersTable < ActiveRecord::Migration
   end
 end
 ```
-`rake db:migrate`
-`db/schema.rb` now looks like this:
-```ruby
-ActiveRecord::Schema.define(version: 20160405235235) do
 
-  create_table "characters", force: :cascade do |t|
-    t.string  "name"
-    t.integer "world_id"
-  end
-
-  create_table "worlds", force: :cascade do |t|
-    t.string "name"
-  end
-
-end
-```
-
-Let's see what methods our Character Class/instance has. Time to create a nameless character.
-`tux`
+Here is a nameless character.
 ```ruby
 >> nameless_character = Character.new
 => #<Character id: nil, name: nil, world_id: nil>
 >> nameless_character_methods = nameless_character.methods.map {|method| method.to_s}.sort!
->> nameless_character_methods.each {|m| puts m}
+>> (nameless_character_methods - control_methods).each {|m| puts m}
 ```
-###Character instance methods.
+###Character Instance methods.
 ```ruby
-(nameless_character_methods - nameless_world_methods).each {|m| puts m}                                                                                                        
+name
+name=
+name?
+name_before_type_cast
+name_came_from_user?
+name_change
+name_changed?
+name_was
+name_will_change!
+reset_name!
+restore_name!
+
 autosave_associated_records_for_world
 belongs_to_counter_cache_after_update
 build_world
 create_world
 create_world!
-reset_world_id!
-restore_world_id!
+
 world
 world=
 world_id
@@ -240,10 +237,12 @@ world_id_change
 world_id_changed?
 world_id_was
 world_id_will_change!
+reset_world_id!
+restore_world_id!
 ```
 
 ###Character Class methods
 ```ruby
->> (Character.methods - World.methods).each {|m| puts m}                                                     
+>> (character_class_methods - control_class_methods).each {|m| puts m}
 => []
 ```
