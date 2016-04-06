@@ -298,3 +298,26 @@ end
 ```
 If we look back to our generated methods, we see that it is the `has_many` macro that gives our ____s method. Our PowerUp has many characters and our characters will have many powerups through their world.
 
+I've gone ahead and created the world `mushroom_kingdom` with a name of "Mushroom Kingdom". I've also created two characters named Mario and Luigi along with two Powerups `mushroom`, and `fire_flower`.
+
+Before anything else, lets test some of our relationships. If we set give Mario a world to live in, like this:
+```ruby
+mario.world = mushroom_kingdom
+```
+we expect our `mushroom_kingdom.characters` to return some info about its single inhabitant, Mario.
+Instead, however, we get this:
+```ruby
+>> mushroom_kingdom.characters.first
+=> nil
+```
+The problem is this. **Children are not responsible**.
+Rather than telling the child object that `belongs_to` the parent about anything, Always tell the parent. The parent is responsible and will let the child object know anything it needs to know.
+```ruby
+>> goomba = Character.create(name: "Goomba")
+=> #<Character id: 3, name: "Goomba", world_id: nil>
+
+>> mushroom_kingdom.characters << goomba
+>> goomba.world
+=> #<World id: 2, name: "Mushroom Kingdom">
+```
+
