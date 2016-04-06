@@ -1,3 +1,4 @@
+```ruby
 !
 !=
 !~
@@ -594,3 +595,4 @@ where
 with_warnings
 yaml_as
 yaml_tag
+```
