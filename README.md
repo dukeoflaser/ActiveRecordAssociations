@@ -266,7 +266,7 @@ end
 ```ruby
 class Character < ActiveRecord::Base
   belongs_to :world
-  has_many :powerups, through: world
+  has_many :powerups, through: :world
 end
 ```
 ```ruby
