@@ -260,7 +260,7 @@ Here are updated versions of each of our three classes.
 ```ruby
 class World < ActiveRecord::Base
   has_many :characters
-  has_many :power_ups, through: characters
+  has_many :power_ups
 end
 ```
 ```ruby
@@ -342,5 +342,8 @@ Seems to work. What about asking our fire flower which characters have access to
 >>fire_flower.characters.first.name
 => ActiveRecord::StatementInvalid: SQLite3::SQLException: no such column: characters.power_up_id:
 ```
+So this is looking for a `power_up_id` column. Recall that any column ending in `_id` is a foreign key column that goes hand in hand with a `belongs_to` method for a parent class. So this is essentially saying that our PowerUp model needs to be the parent of our characters. The problem is, is that we don't want that. We want our powerups to get their list of characters through whatever characters happen to live in the same world they do, not because they are directly related to them.
+
+
 
 
