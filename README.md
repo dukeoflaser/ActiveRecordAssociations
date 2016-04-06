@@ -59,7 +59,21 @@ D, [2016-04-05T22:33:05.657346 #3388] DEBUG -- :    (12.0ms)  commit transaction
 nameless_world_methods = nameless_world.methods.map {|method| method.to_s}.sort!
 nameless_world_methods.each {|m| puts m}
 ```
-###Instance Methods for World
+###Instance Methods for World that has many characters
+```ruby
+class World < ActiveRecord::Base
+  has_many :characters
+end
+```
+```ruby
+class CreateWorldTable < ActiveRecord::Migration
+  def change
+    create_table :worlds do |t|
+      t.string :name
+    end
+  end
+end
+```
 ```ruby
 #List of world instance methods - list of class Empty< ActiveRecord::Base
 
