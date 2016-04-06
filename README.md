@@ -46,9 +46,7 @@ class World < ActiveRecord::Base
 end
 ```
 
-Create and corresponding table with a column for the name of the world.
-`rake db:create_migration NAME=create_worlds_table`
-
+Create a corresponding table with a column for the name of the world.
 Note the plural version of the class is used for the table.
 ```ruby
 class CreateWorldTable < ActiveRecord::Migration
@@ -59,12 +57,13 @@ class CreateWorldTable < ActiveRecord::Migration
   end
 end
 ```
+
 Migrate the change over to the database.
 ```ruby
 rake db:migrate
 ```
-`db/schema.rb` now has the following:
 
+`db/schema.rb` now has the following:
 ```ruby
 ActiveRecord::Schema.define(version: 20160405222201) do
 
@@ -88,7 +87,9 @@ nameless_world_methods = nameless_world.methods.map {|method| method.to_s}.sort!
 nameless_world_methods.each {|m| puts m}
 ```
 
-###World that has many characters
+We are now ready to make our comparisons.
+
+###A _World_ that has many _characters_
 Note: The list of methods was created like this:
 ```ruby
 >> nameless_world_methods = nameless_world.methods.map {|m| m.to_s}.sort!
@@ -97,6 +98,7 @@ Note: The list of methods was created like this:
 >> world_class_methods = World.methods.map {|m| m.to_s}.sort!
 >> (world_class_methods - control_class_methods).each {|m| puts m}
 ```
+
 Again, here is our model and its table.
 ```ruby
 class World < ActiveRecord::Base
@@ -112,6 +114,7 @@ class CreateWorldTable < ActiveRecord::Migration
   end
 end
 ```
+
 #####Instance Methods
 ```ruby
 after_add_for_characters
@@ -149,6 +152,7 @@ name_will_change!
 reset_name!
 restore_name!
 ```
+
 #####Class Methods
 ```ruby
 after_add_for_characters
@@ -165,6 +169,7 @@ before_remove_for_characters
 before_remove_for_characters=
 before_remove_for_characters?
 ```
+
 As you can see, ActiveRecord generates instance methods based on the names of the columns in the database.
 There are also some common class methods based on the associated model.
 
