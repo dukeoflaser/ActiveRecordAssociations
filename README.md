@@ -286,7 +286,7 @@ ActiveRecord::Schema.define(version: 20160406024221) do
 
   create_table "powerups", force: :cascade do |t|
     t.string  "name"
-    t.integer "character_id"
+    t.integer "world_id"
   end
 
   create_table "worlds", force: :cascade do |t|
