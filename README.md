@@ -59,7 +59,9 @@ D, [2016-04-05T22:33:05.657346 #3388] DEBUG -- :    (12.0ms)  commit transaction
 nameless_world_methods = nameless_world.methods.map {|method| method.to_s}.sort!
 nameless_world_methods.each {|m| puts m}
 ```
-###Instance Methods for World that has many characters
+###World that has many characters
+#####Instance Methods
+Note: The list of methods was like this: `World.new.methods - Blank_AR.new.methods'
 ```ruby
 class World < ActiveRecord::Base
   has_many :characters
@@ -75,8 +77,6 @@ class CreateWorldTable < ActiveRecord::Migration
 end
 ```
 ```ruby
-#List of world instance methods - list of class Empty< ActiveRecord::Base
-
 after_add_for_characters
 after_add_for_characters=
 after_add_for_characters?
@@ -96,7 +96,7 @@ characters
 characters=
 validate_associated_records_for_characters
 ```
-###Class Methods for World
+#####Class Methods
 ```ruby
 after_add_for_characters
 after_add_for_characters?
