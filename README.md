@@ -278,7 +278,7 @@ end
 ```ruby
 class PowerUp < ActiveRecord::Base
   belongs_to :world
-  has_many :characters
+  belongs_to :character
 end
 ```
 And here is our current database schema.
@@ -320,7 +320,7 @@ Instead, however, we get this:
 ```
 Hmmm. The problem is this: 
 **Children are not responsible**.
-Rather than telling a child object (`mario`)something the parent needs to know, always tell the parent (`mushroom_kingdom`). The parent is the responsible one in the relationship and will let the child object know what it needs to know.
+Rather than telling a child object (`mario`) something the parent needs to know, always tell the parent (`mushroom_kingdom`). The parent is the responsible one in the relationship and will let the child object know what it needs to know.
 ```ruby
 >> goomba = Character.create(name: "Goomba")
 => #<Character id: 3, name: "Goomba", world_id: nil>
