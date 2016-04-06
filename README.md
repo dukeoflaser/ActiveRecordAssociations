@@ -148,7 +148,6 @@ Generated from the database columns:
 name
 name=
 name?
-
 name_before_type_cast
 name_came_from_user?
 name_change
@@ -176,8 +175,7 @@ before_remove_for_characters=
 before_remove_for_characters?
 ```
 
-As you can see, ActiveRecord generates instance methods based on the names of the columns in the database.
-There are also some common class methods based on the associated model.
+As you can see, ActiveRecord generates instance methods based on both names of the columns in the database and the various association macros.
 
 
 
@@ -210,7 +208,18 @@ Here is a nameless character.
 >> nameless_character_methods = nameless_character.methods.map {|method| method.to_s}.sort!
 >> (nameless_character_methods - control_methods).each {|m| puts m}
 ```
-###Character Instance methods.
+###Instance methods.
+Generated from the `belongs_to` method:
+```ruby
+world
+world=
+autosave_associated_records_for_world
+belongs_to_counter_cache_after_update
+build_world
+create_world
+create_world!
+```
+Generated from the database columns:
 ```ruby
 name
 name=
@@ -224,14 +233,6 @@ name_will_change!
 reset_name!
 restore_name!
 
-autosave_associated_records_for_world
-belongs_to_counter_cache_after_update
-build_world
-create_world
-create_world!
-
-world
-world=
 world_id
 world_id=
 world_id?
@@ -245,7 +246,7 @@ reset_world_id!
 restore_world_id!
 ```
 
-###Character Class methods
+###Class methods
 ```ruby
 >> (character_class_methods - control_class_methods).each {|m| puts m}
 => []
