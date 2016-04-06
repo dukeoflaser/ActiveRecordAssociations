@@ -3,6 +3,13 @@
 character_methods.each {|m| puts m}
 ```
 ```ruby
+!
+!=
+!~
+<
+<=
+<=>
+==
 ===
 =~
 >
