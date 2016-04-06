@@ -246,3 +246,24 @@ restore_world_id!
 >> (character_class_methods - control_class_methods).each {|m| puts m}
 => []
 ```
+
+
+###A _PowerUp_ `belongs_to` a _world_ and `has_many` _characters_
+```ruby
+class PowerUp < ActiveRecord::Base
+  belongs_to :world
+  has_many :characters
+end
+```
+```ruby
+class CreatePowerupsTable < ActiveRecord::Migration
+  def change
+    create_table :powerups do |t|
+      t.string :name
+      t.integer character_id
+    end
+  end
+end
+```
+
+###A _World_ `has_many` _powerups_ `through:` _characters_ 
