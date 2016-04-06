@@ -15,38 +15,7 @@ Experiment with three models. World, Character, PowerUp
 
 
 
-World:
-```ruby
-class World < ActiveRecord::Base
-  has_many :characters
-end
-```
 
-Create and corresponding table with a column for the name of the world.
-`rake db:create_migration NAME=create_worlds_table`
-
-Note the plural version of the class is used for the table.
-```ruby
-class CreateWorldTable < ActiveRecord::Migration
-  def change
-    create_table :worlds do |t|
-      t.string :name
-    end
-  end
-end
-```
-`rake db:migrate`
-`db/schema.rb` now has this:
-
-```ruby
-ActiveRecord::Schema.define(version: 20160405222201) do
-
-  create_table "worlds", force: :cascade do |t|
-    t.string "name"
-  end
-
-end
-```
 
 ##Control
 First we need a control model to compare our results against. This will be a blank class that inherits from ActiveRecord. The only column it will have will be its automatically generated `id` column.
@@ -70,7 +39,41 @@ control_class_methods = Blank.methods.map {|m| m.to_s}.sort!
 ```
 The list of control methods can be found [here](https://github.com/MooseBoost/ActiveRecordAssociations/blob/master/control_instance_methods.md "Instance Methods") and [here](https://github.com/MooseBoost/ActiveRecordAssociations/blob/master/control_class_methods.md "Class Methods").
 
-Now, let's create a world that has no name. It is a simple instance, with no attributes.
+##World
+```ruby
+class World < ActiveRecord::Base
+  has_many :characters
+end
+```
+
+Create and corresponding table with a column for the name of the world.
+`rake db:create_migration NAME=create_worlds_table`
+
+Note the plural version of the class is used for the table.
+```ruby
+class CreateWorldTable < ActiveRecord::Migration
+  def change
+    create_table :worlds do |t|
+      t.string :name
+    end
+  end
+end
+```
+Migreate the change over to the database.
+```rake db:migrate```
+`db/schema.rb` now has this:
+
+```ruby
+ActiveRecord::Schema.define(version: 20160405222201) do
+
+  create_table "worlds", force: :cascade do |t|
+    t.string "name"
+  end
+
+end
+```
+
+Now, let's create a world that has no name. It will be a simple instance, with no attributes.
 ```ruby
 >> nameless_world = World.create
 D, [2016-04-05T22:33:05.639088 #3388] DEBUG -- :    (0.2ms)  begin transaction
