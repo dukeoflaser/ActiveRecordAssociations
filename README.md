@@ -61,7 +61,7 @@ nameless_world_methods.each {|m| puts m}
 ```
 ###World that has many characters
 #####Instance Methods
-Note: The list of methods was like this: `World.new.methods - Blank_AR.new.methods'
+Note: The list of methods was like this: `World.new.methods - Blank_AR.new.methods`
 ```ruby
 class World < ActiveRecord::Base
   has_many :characters
