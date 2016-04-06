@@ -13,27 +13,7 @@ Experiment with three models. World, Character, PowerUp
  - World has many powerups through characters. Looking for `mushroom_kingdom.power_ups => [...list of powerups from all characters]`
  - Power up belongs to world. Looking for `fire_flower.world => <#Mushroom_kingdom Obj>`
 
-##Control
-First we need a control model to compare our results against. This will be a blank class that inherits from ActiveRecord. The only column it will have will be its automatically generated `id` column.
-```ruby
-class Blank < ActiveRecord::Base
-end
 
-class CreateBlanksTable < ActiveRecord::Migration
-  def change
-    create_table :blanks do |t|
-    end
-  end
-end
-```
-
-```ruby
->> control = Blank.new
-=> #<Blank id: nil>
->> control_methods = control.methods.map {|m| m.to_s}.sort!
->> control_class_methods = Blank.methods.map {|m| m.to_s}.sort!
-```
-The list of control methods can be found [here](https://github.com/MooseBoost/ActiveRecordAssociations/blob/master/control_instance_methods.md "Instance Methods") and [here](https://github.com/MooseBoost/ActiveRecordAssociations/blob/master/control_class_methods.md "Class Methods").
 
 World:
 ```ruby
@@ -81,12 +61,35 @@ D, [2016-04-05T22:33:05.657346 #3388] DEBUG -- :    (12.0ms)  commit transaction
 nameless_world_methods = nameless_world.methods.map {|method| method.to_s}.sort!
 nameless_world_methods.each {|m| puts m}
 ```
+##Control
+First we need a control model to compare our results against. This will be a blank class that inherits from ActiveRecord. The only column it will have will be its automatically generated `id` column.
+```ruby
+class Blank < ActiveRecord::Base
+end
+
+class CreateBlanksTable < ActiveRecord::Migration
+  def change
+    create_table :blanks do |t|
+    end
+  end
+end
+```
+
+```ruby
+>> control = Blank.new
+=> #<Blank id: nil>
+>> control_methods = control.methods.map {|m| m.to_s}.sort!
+>> control_class_methods = Blank.methods.map {|m| m.to_s}.sort!
+```
+The list of control methods can be found [here](https://github.com/MooseBoost/ActiveRecordAssociations/blob/master/control_instance_methods.md "Instance Methods") and [here](https://github.com/MooseBoost/ActiveRecordAssociations/blob/master/control_class_methods.md "Class Methods").
+
+
 ###World that has many characters
-#####Instance Methods
 Note: The list of methods was created like this:
 ```ruby
 nameless_world_methods = nameless_world.methods.map {|m| m.to_s}.sort!
 (nameless_world_methods - control_methods).each {|m| puts m}
+
 world_class_methods = World.methods.map {|m| m.to_s}.sort!
 (world_class_methods - control_class_methods).each {|m| puts m}
 
@@ -105,6 +108,7 @@ class CreateWorldTable < ActiveRecord::Migration
   end
 end
 ```
+#####Instance Methods
 ```ruby
 after_add_for_characters
 after_add_for_characters=
@@ -112,20 +116,26 @@ after_add_for_characters?
 after_remove_for_characters
 after_remove_for_characters=
 after_remove_for_characters?
-autosave_associated_records_for_characters
+
 before_add_for_characters
 before_add_for_characters=
 before_add_for_characters?
 before_remove_for_characters
 before_remove_for_characters=
 before_remove_for_characters?
+
 character_ids
 character_ids=
 characters
 characters=
+
+autosave_associated_records_for_characters
+validate_associated_records_for_characters
+
 name
 name=
 name?
+
 name_before_type_cast
 name_came_from_user?
 name_change
@@ -134,7 +144,6 @@ name_was
 name_will_change!
 reset_name!
 restore_name!
-validate_associated_records_for_characters
 ```
 #####Class Methods
 ```ruby
@@ -144,6 +153,7 @@ after_add_for_characters?
 after_remove_for_characters
 after_remove_for_characters=
 after_remove_for_characters?
+
 before_add_for_characters
 before_add_for_characters=
 before_add_for_characters?
@@ -151,6 +161,9 @@ before_remove_for_characters
 before_remove_for_characters=
 before_remove_for_characters?
 ```
+As you can see, ActiveRecord generates instance methods based on the names of the columns in the database.
+There are also some common class methods based on the associated model.
+
 ### Character belongs to World
 If a model is the child of something it gets a `belongs_to` association. If a model has two or parents it can belong to both through mutltiple `belongs_to` method calls. Another way of looking at the belongs to association is to ask youself if you want this kind of method: `child.dad => <#Dad Object>` or `child.mom => <#Mom Object`
 
