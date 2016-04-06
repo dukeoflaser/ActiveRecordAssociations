@@ -5,18 +5,14 @@ A study of ActiveRecord's Associations and their generated methods.
 
 Experiment with three models. World, Character, PowerUp
  - World has many characters. Looking for `mushroom_kingdom.characters =>[...]`
- - Characters belong to a World. Looking for `mario.world => <#Mushroom_Kingdom Obj...>`
-  
- - Character has many power ups. Looking for `mario.power_ups => [...]`
- - Power up has many characters. Looking for `fire_flower.characters => [...list of charcters that have this powerup]`
+ - World has many powerups. Looking for `mushroom_kingdom.powerups => [...]`
  
- - World has many powerups through characters. Looking for `mushroom_kingdom.power_ups => [...list of powerups from all characters]`
+ - Characters belong to a World. Looking for `mario.world => <#Mushroom_Kingdom Obj...>`
  - Power up belongs to world. Looking for `fire_flower.world => <#Mushroom_kingdom Obj>`
-
-
-
-
-
+ 
+ - Character has many power ups. Looking for `mario.power_ups => [...]`
+ - Powerup belongs to many characters. Looking for `fire_flower.characters => [...]`
+ 
 ##Control
 First we need a control model to compare our results against. This will be a blank class that inherits from ActiveRecord. The only column it will have will be its automatically generated `id` column.
 ```ruby
