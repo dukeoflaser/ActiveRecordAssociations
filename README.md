@@ -4,6 +4,7 @@ A study of ActiveRecord's Associations and their generated methods.
 #####Questions: What methods are generated for each association type? What is the required database column in the matching table? How do the args passed to the `initialize` method affect the situation?
 
 We'll experiment with four models: Game, World, Character, and PowerUp.
+
 A World `has_many` characters and powerups. We're looking for the following behaviour:
  - `mushroom_kingdom.characters =>[...]`
  - `mushroom_kingdom.power_ups => [...]`
