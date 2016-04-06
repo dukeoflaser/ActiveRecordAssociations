@@ -332,4 +332,15 @@ Rather than telling a child object (`mario`)something the parent needs to know, 
 => #<World id: 1, name: "Mushroom Kingdom">
 ```
 
+So our associations are starting to come together - as long as we tell the parent. So how about the association between our characters and our powerups?
+```ruby
+>> mario.power_ups.first.name
+=> "Mushroom"
+```
+Seems to work. What about asking our fire flower which characters have access to it?
+```ruby
+>>fire_flower.characters.first.name
+=> ActiveRecord::StatementInvalid: SQLite3::SQLException: no such column: characters.power_up_id:
+```
+
 
