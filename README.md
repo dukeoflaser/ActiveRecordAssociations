@@ -276,6 +276,7 @@ class PowerUp < ActiveRecord::Base
 end
 ```
 And here is our current database schema.
+Note: The name of the table has an underscore where the class name had an uppercase letter.
 ```ruby
 ActiveRecord::Schema.define(version: 20160406024221) do
 
@@ -284,7 +285,7 @@ ActiveRecord::Schema.define(version: 20160406024221) do
     t.integer "world_id"
   end
 
-  create_table "powerups", force: :cascade do |t|
+  create_table "power_ups", force: :cascade do |t|
     t.string  "name"
     t.integer "world_id"
   end
@@ -295,3 +296,5 @@ ActiveRecord::Schema.define(version: 20160406024221) do
 
 end
 ```
+If we look back to our generated methods, we see that it is the `has_many` macro that gives our ____s method. Our PowerUp has many characters and our characters will have many powerups through their world.
+
