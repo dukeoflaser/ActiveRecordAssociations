@@ -13,6 +13,28 @@ Experiment with three models. World, Character, PowerUp
  - World has many powerups through characters. Looking for `mushroom_kingdom.power_ups => [...list of powerups from all characters]`
  - Power up belongs to world. Looking for `fire_flower.world => <#Mushroom_kingdom Obj>`
 
+##Control
+First we need a control Model. This will just be a blank class, inheriting from ActiveRecord. The only column it will have will be it's automatically generated id column.
+```ruby
+class Blank < ActiveRecord::Base
+end
+
+class CreateBlanksTable < ActiveRecord::Migration
+  def change
+    create_table :blanks do |t|
+    end
+  end
+end
+```
+In tux:
+```ruby
+>> control = Blank.new
+=> #<Blank id: nil>
+>> control_methods = control.methods.map {|m| m.to_s}.sort!
+>> control_class_methods = Blank.methods.map {|m| m.to_s}.sort!
+```
+The list of control methods can be found [here](https://github.com/MooseBoost/ActiveRecordAssociations/blob/master/control_instance_methods.md "Instance Methods") and [here](https://github.com/MooseBoost/ActiveRecordAssociations/blob/master/control_class_methods.md "Class Methods")
+
 World:
 ```ruby
 class World < ActiveRecord::Base
