@@ -59,9 +59,11 @@ class CreateWorldTable < ActiveRecord::Migration
   end
 end
 ```
-Migreate the change over to the database.
-```rake db:migrate```
-`db/schema.rb` now has this:
+Migrate the change over to the database.
+```ruby
+rake db:migrate
+```
+`db/schema.rb` now has the following:
 
 ```ruby
 ActiveRecord::Schema.define(version: 20160405222201) do
