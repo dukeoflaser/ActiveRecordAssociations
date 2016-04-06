@@ -254,7 +254,7 @@ restore_world_id!
 
 
 ###A _World_ `has_many` _powerups_ `through:` _characters_ 
-At this point, we've looked at the generated methods we end up with when our class has both a `belongs_to` relationship and a `has_many` relationship. A PowerUp model What about a _many to many_ relationship, AKA a `has_many through:` association?
+At this point, we've looked at the generated methods we end up with when our class has both a `belongs_to` relationship and a `has_many` relationship. A PowerUp model with both of those relationships would have both sets of methods, along with the database-column generated methods. But what about this _many to many_ relationship, AKA a `has_many through:` association, that we've got going on between our World and its many powerups?
 
 Here are updated versions of each of our three classes.
 ```ruby
@@ -275,7 +275,7 @@ class PowerUp < ActiveRecord::Base
   has_many :characters
 end
 ```
-And here is our current database.
+And here is our current database schema.
 ```ruby
 ActiveRecord::Schema.define(version: 20160406024221) do
 
