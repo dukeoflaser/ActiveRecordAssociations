@@ -7,16 +7,20 @@ We'll experiment with four models: Game, World, Character, and PowerUp.
 A World `has_many` characters and powerups. We're looking for the following behaviour:
  -`mushroom_kingdom.characters =>[...]`
  -`mushroom_kingdom.power_ups => [...]`
+ 
 Characters and Powerups both `belong_to` a World.
  - `mario.world => #<Mushroom Kingdom...>`
  - `fire_flower`.world => #<Mushroom Kingdom...>
+
 A Character `has_many` powerups available `through` the world. 
-- `mario.power_ups => [...]`
+ - `mario.power_ups => [...]`
+
 A Powerup `belongs_to` _many_ characters. 
-- `fire_flower.characters => [...]`
+ - `fire_flower.characters => [...]`
+
 Additionally, a Game has many characters but a character also has many games.
-- `mario.games => [...]`
-- `game.characters => [...]`
+ - `mario.games => [...]`
+ - `game.characters => [...]`
  
 ##Control
 First we need a control model to compare our results against. This will be a blank class that inherits from ActiveRecord. The only column it will have will be its automatically generated `id` column.
