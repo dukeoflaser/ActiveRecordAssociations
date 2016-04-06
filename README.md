@@ -11,7 +11,7 @@ A World `has_many` characters and powerups. We're looking for the following beha
  
 Characters and Powerups both `belong_to` a World.
  - `mario.world => #<Mushroom Kingdom...>`
- - `fire_flower`.world => #<Mushroom Kingdom...>
+ - `fire_flower.world => #<Mushroom Kingdom...>`
 
 A Character `has_many` powerups available `through` the world. 
  - `mario.power_ups => [...]`
