@@ -3,15 +3,23 @@ A study of ActiveRecord's Associations and their generated methods.
 
 #####Questions: What methods are generated for each association type? What is the required database column in the matching table? How do the args passed to the `initialize` method affect the situation?
 
-Experiment with three models. World, Character, PowerUp
- - World has many characters. Looking for `mushroom_kingdom.characters =>[...]`
- - World has many powerups. Looking for `mushroom_kingdom.powerups => [...]`
+We'll experiment with four models: Game, World, Character, and PowerUp.
+A World `has_many` characters and powerups. We're looking for the following behaviour:
+ -`mushroom_kingdom.characters =>[...]`
+ -`mushroom_kingdom.power_ups => [...]`
  
- - Characters belong to a World. Looking for `mario.world => <#Mushroom_Kingdom Obj...>`
- - Powerup belongs to world. Looking for `fire_flower.world => <#Mushroom_kingdom Obj>`
+ Characters and Powerups both `belong_to` a World.
+  - `mario.world => #<Mushroom Kingdom...>`
+  - `fire_flower`.world => #<Mushroom Kingdom...>
  
- - Character has many power ups. Looking for `mario.power_ups => [...]`
- - Powerup belongs to many characters. Looking for `fire_flower.characters => [...]`
+ A Character `has_many` powerups available `through` the world. 
+ - `mario.power_ups => [...]`
+ A Powerup `belongs_to` _many_ characters. 
+ - `fire_flower.characters => [...]`
+ 
+ Additionally, a Game has many characters but a character also has many games.
+ - `mario.games => [...]`
+ - `game.characters => [...]`
  
 ##Control
 First we need a control model to compare our results against. This will be a blank class that inherits from ActiveRecord. The only column it will have will be its automatically generated `id` column.
