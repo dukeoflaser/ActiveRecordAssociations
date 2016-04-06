@@ -1,3 +1,4 @@
+```ruby
 !
 !=
 !~
@@ -328,3 +329,4 @@ with_lock
 with_transaction_returning_status
 with_warnings
 write_store_attribute
+```
