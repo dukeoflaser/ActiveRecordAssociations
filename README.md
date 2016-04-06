@@ -248,22 +248,45 @@ restore_world_id!
 ```
 
 
-###A _PowerUp_ `belongs_to` a _world_ and `has_many` _characters_
+###A _World_ `has_many` _powerups_ `through:` _characters_ 
+At this point, we've looked at the methods we end up when our class has both a `belongs_to` relationship and a `has_many` relationship. What about a _many to many_ relationship, AKA a `has_many through:` association?
+
+Here are updated versions of each of our three classes.
+```ruby
+class World < ActiveRecord::Base
+  has_many :characters
+  has_many :powerups, through: characters
+end
+```
+```ruby
+class Character < ActiveRecord::Base
+  belongs_to :world
+  has_many :powerups
+end
+```
 ```ruby
 class PowerUp < ActiveRecord::Base
   belongs_to :world
   has_many :characters
 end
 ```
+And here is our current database.
 ```ruby
-class CreatePowerupsTable < ActiveRecord::Migration
-  def change
-    create_table :powerups do |t|
-      t.string :name
-      t.integer character_id
-    end
+ActiveRecord::Schema.define(version: 20160406024221) do
+
+  create_table "characters", force: :cascade do |t|
+    t.string  "name"
+    t.integer "world_id"
   end
+
+  create_table "powerups", force: :cascade do |t|
+    t.string  "name"
+    t.integer "character_id"
+  end
+
+  create_table "worlds", force: :cascade do |t|
+    t.string "name"
+  end
+
 end
 ```
-
-###A _World_ `has_many` _powerups_ `through:` _characters_ 
