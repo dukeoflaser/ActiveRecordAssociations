@@ -14,7 +14,7 @@ Experiment with three models. World, Character, PowerUp
  - Power up belongs to world. Looking for `fire_flower.world => <#Mushroom_kingdom Obj>`
 
 ##Control
-First we need a control Model. This will just be a blank class, inheriting from ActiveRecord. The only column it will have will be it's automatically generated id column.
+First we need a control model to compare our results against. This will be a blank class that inherits from ActiveRecord. The only column it will have will be its automatically generated `id` column.
 ```ruby
 class Blank < ActiveRecord::Base
 end
@@ -26,14 +26,14 @@ class CreateBlanksTable < ActiveRecord::Migration
   end
 end
 ```
-In tux:
+
 ```ruby
 >> control = Blank.new
 => #<Blank id: nil>
 >> control_methods = control.methods.map {|m| m.to_s}.sort!
 >> control_class_methods = Blank.methods.map {|m| m.to_s}.sort!
 ```
-The list of control methods can be found [here](https://github.com/MooseBoost/ActiveRecordAssociations/blob/master/control_instance_methods.md "Instance Methods") and [here](https://github.com/MooseBoost/ActiveRecordAssociations/blob/master/control_class_methods.md "Class Methods")
+The list of control methods can be found [here](https://github.com/MooseBoost/ActiveRecordAssociations/blob/master/control_instance_methods.md "Instance Methods") and [here](https://github.com/MooseBoost/ActiveRecordAssociations/blob/master/control_class_methods.md "Class Methods").
 
 World:
 ```ruby
@@ -83,7 +83,14 @@ nameless_world_methods.each {|m| puts m}
 ```
 ###World that has many characters
 #####Instance Methods
-Note: The list of methods was like this: `World.new.methods - Blank_AR.new.methods`
+Note: The list of methods was created like this:
+```ruby
+nameless_world_methods = nameless_world.methods.map {|m| m.to_s}.sort!
+(nameless_world_methods - control_methods).each {|m| puts m}
+world_class_methods = World.methods.map {|m| m.to_s}.sort!
+(world_class_methods - control_class_methods).each {|m| puts m}
+
+```
 ```ruby
 class World < ActiveRecord::Base
   has_many :characters
@@ -116,25 +123,33 @@ character_ids
 character_ids=
 characters
 characters=
+name
+name=
+name?
+name_before_type_cast
+name_came_from_user?
+name_change
+name_changed?
+name_was
+name_will_change!
+reset_name!
+restore_name!
 validate_associated_records_for_characters
 ```
 #####Class Methods
 ```ruby
 after_add_for_characters
-after_add_for_characters?
 after_add_for_characters=
-
+after_add_for_characters?
 after_remove_for_characters
-after_remove_for_characters?
 after_remove_for_characters=
-
+after_remove_for_characters?
 before_add_for_characters
-before_add_for_characters?
 before_add_for_characters=
-
+before_add_for_characters?
 before_remove_for_characters
-before_remove_for_characters?
 before_remove_for_characters=
+before_remove_for_characters?
 ```
 ### Character belongs to World
 If a model is the child of something it gets a `belongs_to` association. If a model has two or parents it can belong to both through mutltiple `belongs_to` method calls. Another way of looking at the belongs to association is to ask youself if you want this kind of method: `child.dad => <#Dad Object>` or `child.mom => <#Mom Object`
