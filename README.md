@@ -397,7 +397,7 @@ mario.games.last.name
 Closing Notes:
 While writing this, I am using Sinatra and tux to interact with both Active Record and the database. One very confusing issue that came up for me with this last section was a seeming failure of the 'many to many' relationship to actually operate both ways. 
 
-For example, When running throught the final command `mario.games.last.name`, I would get `"Super Mario Bros"` instead of `"Super Mario Bros 3"`. I noticed that tux was not querying the database as it did with the `mario.games.first.name` command. Instead, it seemed to simply be pulling from the established local environment where `mario.games`, having already been queried from the database once, had only one game. Upon exiting tux, re-entering, re-establishing my 'mario' variables, and running the command `mario.games.last.name`, the database was queried and now had two games, the last of which was "Super Mario Bros 3".
+For example, When running the final command `mario.games.last.name`, I would get `"Super Mario Bros"` instead of `"Super Mario Bros 3"`. I noticed that tux was not querying the database as it did with the `mario.games.first.name` command. Instead, it seemed to simply be pulling from the established local environment where `mario.games`, having already been queried from the database once, had only one game. Upon exiting tux, re-entering, re-establishing our 'mario' variables, and running the command `mario.games.last.name`, the database was queried and now had two games, the last of which was "Super Mario Bros 3".
 
 ###Final Thoughts
 
