@@ -186,7 +186,7 @@ As you can see, ActiveRecord generates instance methods based on both names of t
 
 
 ###A _Character_ `belongs_to` a _world_
-If a model is a child of something it gets a `belongs_to` association. If a model has two or parents it can belong to both through mutltiple `belongs_to` method calls. Another way of looking at the belongs to association is to ask youself if you want this kind of method: `child.dad => <#Dad Object>` or `child.mom => <#Mom Object`
+If a model is a child of something it gets a `belongs_to` association. If a model has two or more parents it can belong to all of them through multiple `belongs_to` method calls. Another way of looking at the belongs to association is to ask youself if you want this kind of method: `child.dad => #<Dad...>` or `child.mom => #<Mom...>`
 
 If a model is a child of anything, it requires a parent_id column to be added to it's corresponding table. Any column with a `_id` suffix becomes a foreign key that points to the corresponding table's id column. So, if a character is a child of world, it will need a world_id column to point to the worlds table's id column.
 
