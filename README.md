@@ -306,4 +306,74 @@ fire_flower.characters.first.name
 The relationship that characters have with powerups would be called a _many to many_ relationship, as a character can have many powerups, and a powerup can have many owning characters.
 
 ###Many to Many
+You can also set up this kind of association by using the `has_and_belongs_to_many` macro.
+To experiment with this, we'll use a `Game` model to interact with our characters. Our desired behaviour looks like this:
+```ruby
+mario.games => [...]
+super_mario_bros.characters => [...]
+```
+Our classes will need the new macro.
+```ruby
+class Game < ActiveRecord::Base
+  has_and_belongs_to_many :characters
+end
 
+class Character < ActiveRecord::Base
+  belongs_to :world
+  has_many :power_ups, through: :world
+  has_and_belongs_to_many :games
+end
+```
+Additionally, we need a special table in our database called a _join table_. This is a table that only has two foreign keys: one for each of our models.
+
+We'll create that, and a table for our `Game` class in two seperate migrations.
+```ruby
+class CreateGamesTable < ActiveRecord::Migration
+  def change
+    create_table :games do |t|
+      t.string :name
+    end
+  end
+end
+```
+```ruby
+class CreateCharacterGameTable < ActiveRecord::Migration
+  def change
+    create_table :characters_games do |t|
+      t.integer :character_id
+      t.integer :game_id
+    end
+  end
+end
+```
+After migration, our schema now looks like this:
+```ruby
+ActiveRecord::Schema.define(version: 20160407042123) do
+
+  create_table "characters", force: :cascade do |t|
+    t.string  "name"
+    t.integer "world_id"
+  end
+
+  create_table "characters_games", force: :cascade do |t|
+    t.integer "character_id"
+    t.integer "game_id"
+  end
+
+  create_table "games", force: :cascade do |t|
+    t.string "name"
+  end
+
+  create_table "power_ups", force: :cascade do |t|
+    t.string  "name"
+    t.integer "world_id"
+  end
+
+  create_table "worlds", force: :cascade do |t|
+    t.string  "name"
+    t.integer "charcter_id"
+    t.integer "power_ups_id"
+  end
+
+end
+```
