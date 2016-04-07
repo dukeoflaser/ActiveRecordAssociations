@@ -124,7 +124,7 @@ end
 ```
 
 #####Instance Methods
-Generated from the `has_many` method
+Generated from the `has_many(:characters)` method/arg:
 ```ruby
 after_add_for_characters
 after_add_for_characters=
@@ -215,7 +215,7 @@ Here is a nameless character.
 >> (nameless_character_methods - control_methods).each {|m| puts m}
 ```
 ###Instance methods.
-Generated from the `belongs_to` method:
+Generated from the `belongs_to(:world)` method/arg:
 ```ruby
 world
 world=
@@ -261,18 +261,8 @@ restore_world_id!
 
 ###A _Character_ `has_many` _power_ups_ `through:` _world_ 
 At this point, we've looked at the generated methods we end up with when our class has both a `belongs_to` relationship and a `has_many` relationship. A Character model with both of those relationships would have both sets of methods, along with the database-column generated methods. But what about this `has_many through:` association, that we've got going on between our Characters and their many powerups? Do we get any additional methods showing up?
-Generated from the `belongs_to (world)`method/arg:
-```ruby
-world
-world=
-autosave_associated_records_for_world
-belongs_to_counter_cache_after_update
-build_world
-create_world
-create_world!
-```
 
-Generated from the `has_many` method:
+Generated from the `has_many(:power_ups)` method/arg:
 ```ruby
 after_add_for_power_ups
 after_add_for_power_ups=
@@ -295,6 +285,17 @@ power_ups=
 
 autosave_associated_records_for_power_ups
 validate_associated_records_for_power_ups
+```
+
+Generated from the `belongs_to(:world)`method/arg:
+```ruby
+world
+world=
+autosave_associated_records_for_world
+belongs_to_counter_cache_after_update
+build_world
+create_world
+create_world!
 ```
 
 Generated from the database columns:
