@@ -424,12 +424,18 @@ Seems to work. The key to making this `has_many through:` association work is in
 >>fire_flower.characters.first.name
 => NoMethodError: undefined method `characters' for #<PowerUp id: 2, name: "Fire Flower", world_id: 1>
 ```
-If we look back to our generated methods, we see that it is the `has_many` macro that gives our ______s method. Our PowerUp has many characters and our characters will have many powerups through their world.
+If we look back to our generated methods, we see that it is the `has_many` macro that gives us our `______s` method. Our PowerUp class, however, is using the `belongs_to` macro which does not generate such a method. When we ask the powerup for a list of characters that own it, it seems as though we are agreeing that it `belongs_to` specific characters. However, given the `characters` method that we want, perhaps we should view the powerup as though it `has_many` owners.
+```ruby
+class PowerUp < ActiveRecord::Base
+  belongs_to :world
+  has_many :characters, through: :world
+end
+```
+Our `world` table is already setup with the proper foreign keys.
+```ruby
+fire_flower.characters.first.name
+=> "Mario"
+```
+The relationship that characters have with powerups would be called a _many to many_ relationship, as a character can have many powerups, and a powerup can have many owning characters.
 
-
-
-
-
-
-
-So this is looking for a `power_up_id` column. Recall that any column ending in `_id` is a foreign key column that goes hand in hand with a `belongs_to` method for a parent class. So this is essentially saying that our PowerUp model needs to be the parent of our characters. The problem is, is that we don't want that. We want our powerups to get their list of characters through whatever characters happen to live in the same world they do, not because they are directly related to them.
+###Many to Many
