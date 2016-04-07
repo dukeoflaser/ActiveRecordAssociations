@@ -139,7 +139,7 @@ characters | |
 characters= | |
 validate_associated_records_for_characters | |
 
-As you can see, ActiveRecord generates instance methods based on both names of the columns in the database and the various association macros.
+As you can see, ActiveRecord generates instance methods based on both names of the columns in the database and the various association macros. There are other methods that can be called on the results of these methods such as `characters.clear`. A list can be found [here](http://api.rubyonrails.org/classes/ActiveRecord/Associations/ClassMethods.html "Generated Methods")
 
 
 
