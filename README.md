@@ -182,22 +182,22 @@ belongs_to_counter_cache_after_update | name_before_type_cast |
 build_world | name_came_from_user? | 
 create_world | name_change | 
 create_world! | name_changed? | 
-| name_was | 
-| name_will_change! | 
-| reset_name! | 
-| restore_name! | 
-| | 
-| world_id | 
-| world_id= | 
-| world_id? | 
-| world_id_before_type_cast | 
-| world_id_came_from_user? | 
-| world_id_change | 
-| world_id_changed? | 
-| world_id_was | 
-| world_id_will_change! | 
-| reset_world_id! | 
-| restore_world_id! | 
+ | name_was | 
+ | name_will_change! | 
+ | reset_name! | 
+ | restore_name! | 
+ | | 
+ | world_id | 
+ | world_id= | 
+ | world_id? | 
+ | world_id_before_type_cast | 
+ | world_id_came_from_user? | 
+ | world_id_change | 
+ | world_id_changed? | 
+ | world_id_was | 
+ | world_id_will_change! | 
+ | reset_world_id! | 
+ | restore_world_id! | 
 
 ###A _Character_ `has_many` _power_ups_ `through:` _world_ 
 At this point, we've looked at the generated methods we end up with when our class has both a `belongs_to` relationship and a `has_many` relationship. A Character model with both of those relationships would have both sets of methods, along with the database-column generated methods. But what about this `has_many through:` association, that we've got going on between our Characters and their many powerups? Do we get any additional methods showing up?
