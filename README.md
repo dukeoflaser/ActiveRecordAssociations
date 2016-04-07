@@ -53,7 +53,7 @@ end
 ```
 
 Create a corresponding table with a column for the name of the world.
-Note the plural version of the class is used for the table.
+Note that the _plural_ version of the class is used for the table.
 ```ruby
 class CreateWorldTable < ActiveRecord::Migration
   def change
@@ -82,26 +82,20 @@ end
 
 Let's now create a world that has no name. It will be a simple instance, with no attributes.
 ```ruby
->> nameless_world = World.create
+>> the_world = World.create
 D, [2016-04-05T22:33:05.639088 #3388] DEBUG -- :    (0.2ms)  begin transaction
 D, [2016-04-05T22:33:05.644635 #3388] DEBUG -- :   SQL (0.5ms)  INSERT INTO "worlds" DEFAULT VALUES
 D, [2016-04-05T22:33:05.657346 #3388] DEBUG -- :    (12.0ms)  commit transaction
 => #<World id: 1, name: nil>
 ```
-```ruby
-nameless_world_methods = nameless_world.methods.map {|method| method.to_s}.sort!
-nameless_world_methods.each {|m| puts m}
-```
 
 We are now ready to make our comparisons.
-
-
 
 ###A _World_ that `has_many` _characters_
 Note: The list of methods was created like this:
 ```ruby
->> nameless_world_methods = nameless_world.methods.map {|m| m.to_s}.sort!
->> (nameless_world_methods - control_methods).each {|m| puts m}
+>> world_methods = the_world.methods.map {|m| m.to_s}.sort!
+>> (world_methods - control_methods).each {|m| puts m}
 
 >> world_class_methods = World.methods.map {|m| m.to_s}.sort!
 >> (world_class_methods - control_class_methods).each {|m| puts m}
@@ -186,9 +180,9 @@ As you can see, ActiveRecord generates instance methods based on both names of t
 
 
 ###A _Character_ `belongs_to` a _world_
-If a model is a child of something it gets a `belongs_to` association. If a model has two or more parents it can belong to all of them through multiple `belongs_to` method calls. Another way of looking at the belongs to association is to ask youself if you want this kind of method: `child.dad => #<Dad...>` or `child.mom => #<Mom...>`
+If a model is a child of another model it gets a `belongs_to` association. If a model has two or more parents it can belong to all of them through multiple `belongs_to` method calls. Another way of looking at the `belongs_to` association is to ask youself if you want this kind of method: `child.dad => #<Dad...>` or `child.mom => #<Mom...>`
 
-If a model is a child of anything, it requires a parent_id column to be added to it's corresponding table. Any column with a `_id` suffix becomes a foreign key that points to the corresponding table's id column. So, if a character is a child of world, it will need a world_id column to point to the worlds table's id column.
+If a model is a child of anything, it requires a parent_id column to be added to it's corresponding table. Any column with a `_id` suffix becomes a foreign key that points to the corresponding table's id column. So, if a character is a child of world, it will need a world_id column to point to the `worlds` table id column.
 
 Here is our Character model.
 ```ruby
