@@ -118,7 +118,7 @@ end
 ```
 
 #####Generated Methods
-From `has_many(:characters)` | From Database Columns | Class Methods
+From `has_many(:characters)` | From DB column :name | Class Methods
 --- | --- | ---
 after_add_for_characters | name | after_add_for_characters
 after_add_for_characters= | name= | after_add_for_characters=
