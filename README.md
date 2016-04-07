@@ -139,63 +139,6 @@ characters | |
 characters= | |
 validate_associated_records_for_characters | |
 
-Generated from the `has_many(:characters)` method/arg:
-```ruby
-after_add_for_characters
-after_add_for_characters=
-after_add_for_characters?
-after_remove_for_characters
-after_remove_for_characters=
-after_remove_for_characters?
-
-before_add_for_characters
-before_add_for_characters=
-before_add_for_characters?
-before_remove_for_characters
-before_remove_for_characters=
-before_remove_for_characters?
-
-character_ids
-character_ids=
-characters
-characters=
-
-autosave_associated_records_for_characters
-validate_associated_records_for_characters
-```
-
-Generated from the database columns:
-```ruby
-name
-name=
-name?
-name_before_type_cast
-name_came_from_user?
-name_change
-name_changed?
-name_was
-name_will_change!
-reset_name!
-restore_name!
-```
-
-#####Class Methods
-```ruby
-after_add_for_characters
-after_add_for_characters=
-after_add_for_characters?
-after_remove_for_characters
-after_remove_for_characters=
-after_remove_for_characters?
-
-before_add_for_characters
-before_add_for_characters=
-before_add_for_characters?
-before_remove_for_characters
-before_remove_for_characters=
-before_remove_for_characters?
-```
-
 As you can see, ActiveRecord generates instance methods based on both names of the columns in the database and the various association macros.
 
 
@@ -229,50 +172,32 @@ Here is a nameless character.
 >> character_methods = the_character.methods.map {|method| method.to_s}.sort!
 >> (character_methods - control_methods).each {|m| puts m}
 ```
-###Instance methods.
-Generated from the `belongs_to(:world)` method/arg:
-```ruby
-world
-world=
-autosave_associated_records_for_world
-belongs_to_counter_cache_after_update
-build_world
-create_world
-create_world!
-```
-Generated from the database columns:
-```ruby
-name
-name=
-name?
-name_before_type_cast
-name_came_from_user?
-name_change
-name_changed?
-name_was
-name_will_change!
-reset_name!
-restore_name!
-
-world_id
-world_id=
-world_id?
-world_id_before_type_cast
-world_id_came_from_user?
-world_id_change
-world_id_changed?
-world_id_was
-world_id_will_change!
-reset_world_id!
-restore_world_id!
-```
-
-###Class methods
-```ruby
->> (character_class_methods - control_class_methods).each {|m| puts m}
-=> []
-```
-
+###Generated methods
+From `belongs_to(:world)` | From DB columns :name, :world | Class Methods
+--- | --- | ---
+world | name |
+world= | name= | 
+autosave_associated_records_for_world | name? | 
+belongs_to_counter_cache_after_update | name_before_type_cast | 
+build_world | name_came_from_user? | 
+create_world | name_change | 
+create_world! | name_changed? | 
+| name_was | 
+| name_will_change! | 
+| reset_name! | 
+| restore_name! | 
+| | 
+| world_id | 
+| world_id= | 
+| world_id? | 
+| world_id_before_type_cast | 
+| world_id_came_from_user? | 
+| world_id_change | 
+| world_id_changed? | 
+| world_id_was | 
+| world_id_will_change! | 
+| reset_world_id! | 
+| restore_world_id! | 
 
 ###A _Character_ `has_many` _power_ups_ `through:` _world_ 
 At this point, we've looked at the generated methods we end up with when our class has both a `belongs_to` relationship and a `has_many` relationship. A Character model with both of those relationships would have both sets of methods, along with the database-column generated methods. But what about this `has_many through:` association, that we've got going on between our Characters and their many powerups? Do we get any additional methods showing up?
