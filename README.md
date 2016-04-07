@@ -394,3 +394,22 @@ mario.games.last.name
 => "Super Mario Bros 3"
 ```
 
+Closing Notes:
+While writing this, I am using Sinatra and tux to interact with both Active Record and the database. One very confusing issue that came up for me with this last section was a seeming failure of the 'many to many' relationship to actually operate both ways. 
+
+For example, When running throught the final command `mario.games.last.name`, I would get `"Super Mario Bros"` instead of `"Super Mario Bros 3"`. I noticed that tux was not querying the database as it did with the `mario.games.first.name` command. Instead, it seemed to simply be pulling from the established local environment where `mario.games`, having already been queried from the database once, had only one game. Upon exiting tux, re-entering, re-establishing my 'mario' variables, and running the command `mario.games.last.name`, the database was queried and now had two games, the last of which was "Super Mario Bros 3".
+
+###Final Thoughts
+
+In summing everything up from the above experiment a few simple rules emerge. Follow these, and you will arrive at Active Record Association bliss.
+
+#####Rules to Live By
+ - A Parent `has_many`,  a Child `belongs_to`
+ - Give the child table the foreign key (`_id`) columns.
+ - Provide the parent with information, not the child.
+ - When using a `has_many through` association, the `through` table requires the foreign keys for parent and child.
+ - When using a `has_and_belongs_to_many` association an additional join table is required.
+  - This table should be named with the plural versions of both tables, joined by an underscore, and in alphbetical order.
+  - It's best to remove the primary `id` key. `:id => false`
+  - Its two columns are simple foreign keys.
+ -Lastly, ask yourself what method/result you want. Refer to the above charts to help you determine which association will give you that method/result.
