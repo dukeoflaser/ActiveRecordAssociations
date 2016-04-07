@@ -182,7 +182,7 @@ As you can see, ActiveRecord generates instance methods based on both names of t
 ###A _Character_ `belongs_to` a _world_
 If a model is a child of another model it gets a `belongs_to` association. If a model has two or more parents it can belong to all of them through multiple `belongs_to` method calls. Another way of looking at the `belongs_to` association is to ask youself if you want this kind of method: `child.dad => #<Dad...>` or `child.mom => #<Mom...>`
 
-If a model is a child of anything, it requires a parent_id column to be added to it's corresponding table. Any column with a `_id` suffix becomes a foreign key that points to the corresponding table's id column. So, if a character is a child of world, it will need a world_id column to point to the `worlds` table id column.
+If a model is a child of anything, it requires a parent_id column to be added to it's corresponding table. Any column with a `_id` suffix becomes a foreign key that points to the corresponding table's id column. So, if a character is a child of world, it will need a world_id column to point to the `worlds` table `id` column.
 
 Here is our Character model.
 ```ruby
@@ -203,10 +203,10 @@ end
 
 Here is a nameless character.
 ```ruby
->> nameless_character = Character.new
+>> the_character = Character.new
 => #<Character id: nil, name: nil, world_id: nil>
->> nameless_character_methods = nameless_character.methods.map {|method| method.to_s}.sort!
->> (nameless_character_methods - control_methods).each {|m| puts m}
+>> character_methods = the_character.methods.map {|method| method.to_s}.sort!
+>> (character_methods - control_methods).each {|m| puts m}
 ```
 ###Instance methods.
 Generated from the `belongs_to(:world)` method/arg:
@@ -276,7 +276,7 @@ class PowerUp < ActiveRecord::Base
 end
 ```
 And here is our current database schema.
-Note: The name of the `power-ups` table has an underscore where the class name had an uppercase letter.
+Note: The name of the `power_ups` table has an underscore where the class name had an uppercase letter.
 ```ruby
 ActiveRecord::Schema.define(version: 20160406024221) do
 
@@ -365,7 +365,7 @@ restore_world_id!
 If we compare this list of methods to the previous list of `belongs_to` and `has_many` methods, we can see that adding the `through:` argument to the macro does not create any additional methods. The same goes for Class methods: nothing new.
 
 ###It's-a Me....
-I've gone ahead and created the world `mushroom_kingdom` with a name of "Mushroom Kingdom". I've also created two characters named Mario and Luigi along with two Powerups `mushroom`, and `fire_flower`.
+I've gone ahead and created the world `mushroom_kingdom` with a name of "Mushroom Kingdom". I've also created two characters named Mario and Luigi along with two powerups: `mushroom`, and `fire_flower`.
 
 As stated at the beginning, these are the associations we are after:
 ```ruby
@@ -390,7 +390,7 @@ Instead, however, we get this:
 Hmmm...
 The problem is this: 
 **Children are not responsible**.
-Rather than telling a child object (`mario`) something the parent needs to know, always tell the parent (`mushroom_kingdom`). The parent is the responsible one in the relationship and will let the child object know what it needs to know.
+Rather than telling a child object (`mario`) something the parent needs to know, we need to tell the parent (`mushroom_kingdom`). The parent is the responsible one in the relationship and will let the child object know what it needs to know.
 ```ruby
 >> goomba = Character.create(name: "Goomba")
 => #<Character id: 3, name: "Goomba", world_id: nil>
@@ -413,12 +413,12 @@ So our associations are starting to come together - as long as we are giving our
 >> mario.power_ups.first.name
 => "Mushroom"
 ```
-Seems to work. The key to making this `has_many through:` association work is in the database. If you look at the `worlds` table above, you'll notice that it has foreign keys (`_id` columns) for both the `characters` table and the `power_ups` table. This is what ties our characters to our powerups. So as a general rule, **the `through:` table gets foreign keys for current model and its child**. So what about asking our fire flower which characters have access to it?
+Seems to work. The key to making this `has_many through:` association work is in the database. If you look at the `worlds` table above, you'll notice that it has foreign keys (`_id` columns) for both the `characters` table and the `power_ups` table. This is what ties our characters to our powerups. As a general rule, **the `through:` table gets foreign keys for current model and its child**. So what about asking our fire flower which characters have access to it?
 ```ruby
 >>fire_flower.characters.first.name
 => NoMethodError: undefined method `characters' for #<PowerUp id: 2, name: "Fire Flower", world_id: 1>
 ```
-If we look back to our generated methods, we see that it is the `has_many` macro that gives us our `______s` method. Our PowerUp class, however, is using the `belongs_to` macro which does not generate such a method. When we ask the powerup for a list of characters that own it, it seems as though we are agreeing that it `belongs_to` specific characters. However, given the `characters` method that we want, perhaps we should view the powerup as though it `has_many` owners.
+If we look back to our generated methods, we see that it is the `has_many` macro that gives us our `______s` method. Our PowerUp class, however, is using the `belongs_to` macro which does not generate such a method. _When we ask the powerup for a list of characters that own it, it may seems as it `belongs_to` specific characters. However, given the `characters` method that we want, we should view the powerup as though it `has_many` owners._
 ```ruby
 class PowerUp < ActiveRecord::Base
   belongs_to :world
