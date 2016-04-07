@@ -298,6 +298,8 @@ ActiveRecord::Schema.define(version: 20160406024221) do
 
   create_table "worlds", force: :cascade do |t|
     t.string "name"
+    t.integer "charcter_id"
+    t.integer "power_ups_id"    
   end
 
 end
@@ -417,17 +419,17 @@ So our associations are starting to come together - as long as we are giving our
 >> mario.power_ups.first.name
 => "Mushroom"
 ```
-Seems to work. What about asking our fire flower which characters have access to it?
-
-If we look back to our generated methods, we see that it is the `has_many` macro that gives our ____s method. Our PowerUp has many characters and our characters will have many powerups through their world.
-
-
-
-
-
-
+Seems to work. The key to making this `has_many through:` association work is in the database. If you look at the `worlds` table above, you'll notice that it has foreign keys (`_id` columns) for both the `characters` table and the `power_ups` table. This is what ties our characters to our powerups. So as a general rule, **the `through:` table gets foreign keys for current model and its child**. So what about asking our fire flower which characters have access to it?
 ```ruby
 >>fire_flower.characters.first.name
-=> ActiveRecord::StatementInvalid: SQLite3::SQLException: no such column: characters.power_up_id:
+=> NoMethodError: undefined method `characters' for #<PowerUp id: 2, name: "Fire Flower", world_id: 1>
 ```
+If we look back to our generated methods, we see that it is the `has_many` macro that gives our ______s method. Our PowerUp has many characters and our characters will have many powerups through their world.
+
+
+
+
+
+
+
 So this is looking for a `power_up_id` column. Recall that any column ending in `_id` is a foreign key column that goes hand in hand with a `belongs_to` method for a parent class. So this is essentially saying that our PowerUp model needs to be the parent of our characters. The problem is, is that we don't want that. We want our powerups to get their list of characters through whatever characters happen to live in the same world they do, not because they are directly related to them.
