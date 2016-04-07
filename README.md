@@ -10,8 +10,8 @@ A World `has_many` characters and powerups. We're looking for the following beha
  - `mushroom_kingdom.power_ups => [...]`
  
 Characters and Powerups both `belong_to` a World.
- - `mario.world => #<Mushroom Kingdom...>`
- - `fire_flower.world => #<Mushroom Kingdom...>`
+ - `mario.world => #<World ...>`
+ - `fire_flower.world => #<World ...>`
 
 A Character `has_many` powerups available `through` the world. 
  - `mario.power_ups => [...]`
@@ -262,73 +262,6 @@ restore_world_id!
 ###A _Character_ `has_many` _power_ups_ `through:` _world_ 
 At this point, we've looked at the generated methods we end up with when our class has both a `belongs_to` relationship and a `has_many` relationship. A Character model with both of those relationships would have both sets of methods, along with the database-column generated methods. But what about this `has_many through:` association, that we've got going on between our Characters and their many powerups? Do we get any additional methods showing up?
 
-Generated from the `has_many(:power_ups)` method/arg:
-```ruby
-after_add_for_power_ups
-after_add_for_power_ups=
-after_add_for_power_ups?
-after_remove_for_power_ups
-after_remove_for_power_ups=
-after_remove_for_power_ups?
-
-before_add_for_power_ups
-before_add_for_power_ups=
-before_add_for_power_ups?
-before_remove_for_power_ups
-before_remove_for_power_ups=
-before_remove_for_power_ups?
-
-power_up_ids
-power_up_ids=
-power_ups
-power_ups=
-
-autosave_associated_records_for_power_ups
-validate_associated_records_for_power_ups
-```
-
-Generated from the `belongs_to(:world)`method/arg:
-```ruby
-world
-world=
-autosave_associated_records_for_world
-belongs_to_counter_cache_after_update
-build_world
-create_world
-create_world!
-```
-
-Generated from the database columns:
-```ruby
-name
-name=
-name?
-name_before_type_cast
-name_came_from_user?
-name_change
-name_changed?
-name_was
-name_will_change!
-reset_name!
-restore_name!
-
-world_id
-world_id=
-world_id?
-world_id_before_type_cast
-world_id_came_from_user?
-world_id_change
-world_id_changed?
-world_id_was
-world_id_will_change!
-reset_world_id!
-restore_world_id!
-```
-
-If we compare this list of methods to the previous list of `belongs_to` and `has_many` methods, we can see that adding the `through:` argument to the macro does not create any additional methods. The same goes for Class methods: nothing new.
-
-A Character can have many powerups, like this: `nameless_character.powerups => [...]` but we also want a list of every character that has each powerup, like this: `nameless_powerup.characters => [...]`.
-
 Here are updated versions of each of our three classes.
 ```ruby
 class World < ActiveRecord::Base
@@ -369,12 +302,85 @@ ActiveRecord::Schema.define(version: 20160406024221) do
 
 end
 ```
-If we look back to our generated methods, we see that it is the `has_many` macro that gives our ____s method. Our PowerUp has many characters and our characters will have many powerups through their world.
 
-###It'sa Me....
+####Generated from the `has_many(:power_ups)` method/arg:
+```ruby
+after_add_for_power_ups
+after_add_for_power_ups=
+after_add_for_power_ups?
+after_remove_for_power_ups
+after_remove_for_power_ups=
+after_remove_for_power_ups?
+
+before_add_for_power_ups
+before_add_for_power_ups=
+before_add_for_power_ups?
+before_remove_for_power_ups
+before_remove_for_power_ups=
+before_remove_for_power_ups?
+
+power_up_ids
+power_up_ids=
+power_ups
+power_ups=
+
+autosave_associated_records_for_power_ups
+validate_associated_records_for_power_ups
+```
+
+####Generated from the `belongs_to(:world)`method/arg:
+```ruby
+world
+world=
+autosave_associated_records_for_world
+belongs_to_counter_cache_after_update
+build_world
+create_world
+create_world!
+```
+
+####Generated from the database columns:
+```ruby
+name
+name=
+name?
+name_before_type_cast
+name_came_from_user?
+name_change
+name_changed?
+name_was
+name_will_change!
+reset_name!
+restore_name!
+
+world_id
+world_id=
+world_id?
+world_id_before_type_cast
+world_id_came_from_user?
+world_id_change
+world_id_changed?
+world_id_was
+world_id_will_change!
+reset_world_id!
+restore_world_id!
+```
+
+If we compare this list of methods to the previous list of `belongs_to` and `has_many` methods, we can see that adding the `through:` argument to the macro does not create any additional methods. The same goes for Class methods: nothing new.
+
+###It's-a Me....
 I've gone ahead and created the world `mushroom_kingdom` with a name of "Mushroom Kingdom". I've also created two characters named Mario and Luigi along with two Powerups `mushroom`, and `fire_flower`.
 
-Before anything else, lets test some of our relationships. 
+As stated at the beginning, these are the associations we are after:
+```ruby
+mushroom_kingdom.characters =>[...]
+mushroom_kingdom.power_ups => [...]
+mario.world => #<World ...>
+fire_flower.world => #<World ...>
+mario.power_ups => [...]
+fire_flower.characters => [...]
+```
+So lets test some of our methods. 
 If we give Mario a world to live in, like this:
 ```ruby
 mario.world = mushroom_kingdom
@@ -385,7 +391,8 @@ Instead, however, we get this:
 >> mushroom_kingdom.characters.first
 => nil
 ```
-Hmmm. The problem is this: 
+Hmmm...
+The problem is this: 
 **Children are not responsible**.
 Rather than telling a child object (`mario`) something the parent needs to know, always tell the parent (`mushroom_kingdom`). The parent is the responsible one in the relationship and will let the child object know what it needs to know.
 ```ruby
@@ -395,22 +402,30 @@ Rather than telling a child object (`mario`) something the parent needs to know,
 >> mushroom_kingdom.characters << goomba
 >> goomba.world
 => #<World id: 1, name: "Mushroom Kingdom">
+
 >> goomba
 => #<Character id: 3, name: "Goomba", world_id: 1>
 
 >> mushroom_kingdom.power_ups << mushroom
 >> mushroom_kingdom.power_ups << fire_flower
-
 >> fire_flower.world
 => #<World id: 1, name: "Mushroom Kingdom">
 ```
 
-So our associations are starting to come together - as long as we tell the parent. So how about the association between our characters and our powerups?
+So our associations are starting to come together - as long as we are giving our information to the parent and not the irresponsible child. So how about the `has_many through:` association between our characters and our powerups?
 ```ruby
 >> mario.power_ups.first.name
 => "Mushroom"
 ```
 Seems to work. What about asking our fire flower which characters have access to it?
+
+If we look back to our generated methods, we see that it is the `has_many` macro that gives our ____s method. Our PowerUp has many characters and our characters will have many powerups through their world.
+
+
+
+
+
+
 ```ruby
 >>fire_flower.characters.first.name
 => ActiveRecord::StatementInvalid: SQLite3::SQLException: no such column: characters.power_up_id:
