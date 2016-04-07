@@ -117,7 +117,7 @@ class CreateWorldTable < ActiveRecord::Migration
 end
 ```
 
-#####Generated Methods
+#####Generated `has_many` Methods
 From `has_many(:characters)` | From DB column :name | Class Methods
 --- | --- | ---
 after_add_for_characters | name | after_add_for_characters
@@ -172,7 +172,7 @@ Here is a nameless character.
 >> character_methods = the_character.methods.map {|method| method.to_s}.sort!
 >> (character_methods - control_methods).each {|m| puts m}
 ```
-###Generated methods
+#####Generated `belongs_to` methods
 From `belongs_to(:world)` | From DB column :name| Class Methods
 --- | --- | ---
 world | name | **none**
@@ -188,8 +188,20 @@ create_world! | name_changed? |
  | restore_name! | 
 
 ###A _Character_ `has_many` _power_ups_ `through:` _world_ 
-At this point, we've looked at the generated methods we end up with when our class has both a `belongs_to` relationship and a `has_many` relationship. A Character model with both of those relationships would have both sets of methods, along with the database-column generated methods. But what about this `has_many through:` association, that we've got going on between our Characters and their many powerups? Do we get any additional methods showing up?
+At this point, we've looked at the generated methods we end up with when our class has both a `belongs_to` relationship and a `has_many` relationship. A Character model with both of those relationships would have both sets of methods, along with the database-column generated methods. But what about this `has_many through:` association, that we've got going on between our Characters and their many powerups? Do we get any additional methods showing up? The answer to that question is simply this: no.
 
+###It's-a Me....
+I've gone ahead and created the world `mushroom_kingdom` with a name of "Mushroom Kingdom". I've also created two characters named Mario and Luigi along with two powerups: `mushroom`, and `fire_flower`.
+
+As stated at the beginning, these are the associations we are after:
+```ruby
+mushroom_kingdom.characters =>[...]
+mushroom_kingdom.power_ups => [...]
+mario.world => #<World ...>
+fire_flower.world => #<World ...>
+mario.power_ups => [...]
+fire_flower.characters => [...]
+```
 Here are updated versions of each of our three classes.
 ```ruby
 class World < ActiveRecord::Base
@@ -232,98 +244,22 @@ ActiveRecord::Schema.define(version: 20160406024221) do
 
 end
 ```
-
-Generated from the `has_many(:power_ups)` method/arg:
-```ruby
-after_add_for_power_ups
-after_add_for_power_ups=
-after_add_for_power_ups?
-after_remove_for_power_ups
-after_remove_for_power_ups=
-after_remove_for_power_ups?
-
-before_add_for_power_ups
-before_add_for_power_ups=
-before_add_for_power_ups?
-before_remove_for_power_ups
-before_remove_for_power_ups=
-before_remove_for_power_ups?
-
-power_up_ids
-power_up_ids=
-power_ups
-power_ups=
-
-autosave_associated_records_for_power_ups
-validate_associated_records_for_power_ups
-```
-
-Generated from the `belongs_to(:world)`method/arg:
-```ruby
-world
-world=
-autosave_associated_records_for_world
-belongs_to_counter_cache_after_update
-build_world
-create_world
-create_world!
-```
-
-Generated from the database columns:
-```ruby
-name
-name=
-name?
-name_before_type_cast
-name_came_from_user?
-name_change
-name_changed?
-name_was
-name_will_change!
-reset_name!
-restore_name!
-
-world_id
-world_id=
-world_id?
-world_id_before_type_cast
-world_id_came_from_user?
-world_id_change
-world_id_changed?
-world_id_was
-world_id_will_change!
-reset_world_id!
-restore_world_id!
-```
-
-If we compare this list of methods to the previous list of `belongs_to` and `has_many` methods, we can see that adding the `through:` argument to the macro does not create any additional methods. The same goes for Class methods: nothing new.
-
-###It's-a Me....
-I've gone ahead and created the world `mushroom_kingdom` with a name of "Mushroom Kingdom". I've also created two characters named Mario and Luigi along with two powerups: `mushroom`, and `fire_flower`.
-
-As stated at the beginning, these are the associations we are after:
-```ruby
-mushroom_kingdom.characters =>[...]
-mushroom_kingdom.power_ups => [...]
-mario.world => #<World ...>
-fire_flower.world => #<World ...>
-mario.power_ups => [...]
-fire_flower.characters => [...]
-```
 So lets test some of our methods. 
 If we give Mario a world to live in, like this:
 ```ruby
 mario.world = mushroom_kingdom
 ```
-we expect our `mushroom_kingdom.characters` to return some info about its single inhabitant, Mario.
+We expect our `mushroom_kingdom.characters` to return some info about its single inhabitant, Mario.
 Instead, however, we get this:
 ```ruby
 >> mushroom_kingdom.characters.first
 => nil
 ```
 Hmmm...
+<hr>
 The problem is this: 
 **Children are not responsible**.
+<hr>
 Rather than telling a child object (`mario`) something the parent needs to know, we need to tell the parent (`mushroom_kingdom`). The parent is the responsible one in the relationship and will let the child object know what it needs to know.
 ```ruby
 >> goomba = Character.create(name: "Goomba")
