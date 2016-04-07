@@ -325,7 +325,7 @@ reset_world_id!
 restore_world_id!
 ```
 
-If we compare this list of methods to the previous list of `belongs_to` and `has_many` methods, we can see that adding the `through:` argument to the macro does not create any additional methods.
+If we compare this list of methods to the previous list of `belongs_to` and `has_many` methods, we can see that adding the `through:` argument to the macro does not create any additional methods. The same goes for Class methods: nothing new.
 
 A Character can have many powerups, like this: `nameless_character.powerups => [...]` but we also want a list of every character that has each powerup, like this: `nameless_powerup.characters => [...]`.
 
@@ -416,7 +416,3 @@ Seems to work. What about asking our fire flower which characters have access to
 => ActiveRecord::StatementInvalid: SQLite3::SQLException: no such column: characters.power_up_id:
 ```
 So this is looking for a `power_up_id` column. Recall that any column ending in `_id` is a foreign key column that goes hand in hand with a `belongs_to` method for a parent class. So this is essentially saying that our PowerUp model needs to be the parent of our characters. The problem is, is that we don't want that. We want our powerups to get their list of characters through whatever characters happen to live in the same world they do, not because they are directly related to them.
-
-
-
-
