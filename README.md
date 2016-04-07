@@ -377,3 +377,20 @@ ActiveRecord::Schema.define(version: 20160407042123) do
 
 end
 ```
+After creating two games named "Super Mario Bros" and "Super Mario Bros 3" you can do this:
+```ruby
+mario.games << super_mario_bros
+luigi.games << super_mario_bros
+
+super_mario_bros.characters.first.name
+=> "Mario"
+super_mario_bros.characters.last.name
+=> "Luigi"
+
+super_mario_bros_3.characters << mario
+mario.games.first.name
+=> "Super Mario Bros"
+mario.games.last.name
+=> "Super Mario Bros 3"
+```
+
