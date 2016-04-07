@@ -117,33 +117,28 @@ class CreateWorldTable < ActiveRecord::Migration
 end
 ```
 
-#####Instance Methods
+#####Generated Methods
 From `has_many(:characters)` | From Database Columns | Class Methods
 --- | --- | ---
-*Still* | `renders` | **nicely**
 after_add_for_characters | name | after_add_for_characters
 after_add_for_characters= | name= | after_add_for_characters=
 after_add_for_characters? | name? | after_add_for_characters?
 after_remove_for_characters | name_before_type_cast | after_remove_for_characters
 after_remove_for_characters= | name_came_from_user? | after_remove_for_characters=
 after_remove_for_characters? | name_change | after_remove_for_characters?
- | name_changed? |
+autosave_associated_records_for_characters | name_changed? |
 before_add_for_characters | name_was | before_add_for_characters
 before_add_for_characters= | name_will_change! | before_add_for_characters=
 before_add_for_characters? | reset_name! | before_add_for_characters?
 before_remove_for_characters | restore_name! | before_remove_for_characters
 before_remove_for_characters= | | before_remove_for_characters=
 before_remove_for_characters? | | before_remove_for_characters?
- | |
 character_ids | |
 character_ids= | |
 characters | |
 characters= | |
- | |
-autosave_associated_records_for_characters | |
 validate_associated_records_for_characters | |
 
-1 | 2 | 3
 Generated from the `has_many(:characters)` method/arg:
 ```ruby
 after_add_for_characters
