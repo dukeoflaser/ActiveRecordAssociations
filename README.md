@@ -305,7 +305,7 @@ ActiveRecord::Schema.define(version: 20160406024221) do
 end
 ```
 
-####Generated from the `has_many(:power_ups)` method/arg:
+Generated from the `has_many(:power_ups)` method/arg:
 ```ruby
 after_add_for_power_ups
 after_add_for_power_ups=
@@ -330,7 +330,7 @@ autosave_associated_records_for_power_ups
 validate_associated_records_for_power_ups
 ```
 
-####Generated from the `belongs_to(:world)`method/arg:
+Generated from the `belongs_to(:world)`method/arg:
 ```ruby
 world
 world=
@@ -341,7 +341,7 @@ create_world
 create_world!
 ```
 
-####Generated from the database columns:
+Generated from the database columns:
 ```ruby
 name
 name=
