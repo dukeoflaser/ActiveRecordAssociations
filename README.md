@@ -412,4 +412,4 @@ In summing everything up from the above experiment a few simple rules emerge. Fo
   - This table should be named with the plural versions of both tables, joined by an underscore, and in alphbetical order.
   - It's best to remove the primary `id` key. `:id => false`
   - Its two columns are simple foreign keys.
- -Lastly, ask yourself what method/result you want. Refer to the above charts to help you determine which association will give you that method/result.
+ - Lastly, ask yourself what method/result you want. Refer to the above charts to help you determine which association will give you that method/result.
