@@ -288,7 +288,10 @@ Seems to work. The key to making this `has_many through:` association work is in
 >>fire_flower.characters.first.name
 => NoMethodError: undefined method `characters' for #<PowerUp id: 2, name: "Fire Flower", world_id: 1>
 ```
-If we look back to our generated methods, we see that it is the `has_many` macro that gives us our `______s` method. Our PowerUp class, however, is using the `belongs_to` macro which does not generate such a method. _When we ask the powerup for a list of characters that own it, it may seems as it `belongs_to` specific characters. However, given the `characters` method that we want, we should view the powerup as though it `has_many` owners._
+If we look back to our generated methods, we see that it is the `has_many` macro that gives us our `______s` method. Our PowerUp class, however, is using the `belongs_to` macro which does not generate such a method.
+<hr>
+_When we ask the powerup for a list of characters that own it, it may seems as it `belongs_to` specific characters. However, given the `characters` method that we want, we should view the powerup as though it `has_many` owners._
+<hr>
 ```ruby
 class PowerUp < ActiveRecord::Base
   belongs_to :world
@@ -303,3 +306,4 @@ fire_flower.characters.first.name
 The relationship that characters have with powerups would be called a _many to many_ relationship, as a character can have many powerups, and a powerup can have many owning characters.
 
 ###Many to Many
+
